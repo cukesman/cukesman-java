@@ -23,7 +23,7 @@
     </properties>
 
     <modules>
-        <module>cukesman-client</module>
+        <module>cukesman-reporter-common</module>
         <module>cukesman-jbehave</module>
     </modules>
 
@@ -31,7 +31,7 @@
         <dependencies>
             <dependency>
                 <groupId>cukesman</groupId>
-                <artifactId>cukesman-client</artifactId>
+                <artifactId>cukesman-reporter-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

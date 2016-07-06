@@ -1,8 +1,9 @@
 package cukesman.jbehave;
 
-import cukesman.jbehave.client.model.FeatureReport;
-import cukesman.jbehave.client.model.ScenarioReport;
-import cukesman.jbehave.client.model.Status;
+import cukesman.reporter.ReportUploader;
+import cukesman.reporter.model.FeatureReport;
+import cukesman.reporter.model.ScenarioReport;
+import cukesman.reporter.model.Status;
 import org.jbehave.core.model.ExamplesTable;
 import org.jbehave.core.model.GivenStories;
 import org.jbehave.core.model.Lifecycle;
@@ -19,8 +20,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Logger;
+
+import static cukesman.reporter.ContinuousIntegrationService.*;
 
 public class CukesmanStoryReporter implements StoryReporter {
+
+    private Logger LOG = Logger.getLogger(CukesmanStoryReporter.class.getName());
 
     private FeatureReport featureReport;
 
@@ -46,6 +52,7 @@ public class CukesmanStoryReporter implements StoryReporter {
         final Optional<String> token = token(story.getMeta());
         if (token.isPresent()) {
             featureReport = new FeatureReport();
+            featureReport.setTitle(story.getName());
             featureReport.setToken(token.get());
         }
     }
@@ -54,6 +61,21 @@ public class CukesmanStoryReporter implements StoryReporter {
     public void afterStory(boolean givenStory) {
         if (givenStory) {
             return;
+        }
+
+        if (!dryRun && isContinousIntegrationRun()) {
+            try {
+                ReportUploader.fromEnv().upload(featureReport);
+            } catch (Exception e) {
+                final String message = String.format(
+                        "Could not upload report for feature %s (Token %s) to cukesman.",
+                        featureReport.getToken(),
+                        featureReport.getToken()
+                );
+                LOG.warning(message);
+            }
+        } else {
+            LOG.info("Skipping report upload to cukesman (no CI environment detected).");
         }
      }
 

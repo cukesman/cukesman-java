@@ -1,11 +1,14 @@
-package cukesman.jbehave.client.model;
+package cukesman.reporter.model;
 
+import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FeatureReport {
 
     private String token;
+
+    private String title;
 
     private List<ScenarioReport> scenarios = new ArrayList<>();
 
@@ -15,6 +18,15 @@ public class FeatureReport {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    @Transient
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public List<ScenarioReport> getScenarios() {

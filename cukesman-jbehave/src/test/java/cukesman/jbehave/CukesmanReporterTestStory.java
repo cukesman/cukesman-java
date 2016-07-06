@@ -2,9 +2,9 @@ package cukesman.jbehave;
 
 //import de.codecentric.jbehave.junit.monitoring.JUnitReportingRunner;
 
-import cukesman.jbehave.client.model.FeatureReport;
-import cukesman.jbehave.client.model.ScenarioReport;
-import cukesman.jbehave.client.model.Status;
+import cukesman.reporter.model.FeatureReport;
+import cukesman.reporter.model.ScenarioReport;
+import cukesman.reporter.model.Status;
 import cukesman.jbehave.step.GrocerySteps;
 import org.jbehave.core.steps.InjectableStepsFactory;
 import org.jbehave.core.steps.InstanceStepsFactory;

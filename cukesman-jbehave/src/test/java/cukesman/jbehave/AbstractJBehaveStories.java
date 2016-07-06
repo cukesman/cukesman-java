@@ -3,7 +3,7 @@
  */
 package cukesman.jbehave;
 
-import cukesman.jbehave.client.model.FeatureReport;
+import cukesman.reporter.model.FeatureReport;
 import org.jbehave.core.Embeddable;
 import org.jbehave.core.configuration.Configuration;
 import org.jbehave.core.configuration.MostUsefulConfiguration;

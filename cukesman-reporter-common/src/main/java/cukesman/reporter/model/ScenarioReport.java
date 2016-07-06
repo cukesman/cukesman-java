@@ -1,4 +1,4 @@
-package cukesman.jbehave.client.model;
+package cukesman.reporter.model;
 
 public class ScenarioReport {
 

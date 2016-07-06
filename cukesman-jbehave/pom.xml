@@ -18,7 +18,7 @@
     <dependencies>
         <dependency>
             <groupId>cukesman</groupId>
-            <artifactId>cukesman-client</artifactId>
+            <artifactId>cukesman-reporter-common</artifactId>
         </dependency>
         <dependency>
             <groupId>org.jbehave</groupId>

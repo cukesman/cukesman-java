@@ -9,7 +9,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>cukesman-client</artifactId>
+    <artifactId>cukesman-reporter-common</artifactId>
 
     <properties>
     </properties>
