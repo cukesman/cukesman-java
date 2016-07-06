@@ -1,10 +1,10 @@
-package cukesman.jbehave.model;
+package cukesman.jbehave.client.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FeatureReport implements Serializable {
+public class FeatureReport {
+
     private String token;
 
     private List<ScenarioReport> scenarios = new ArrayList<>();

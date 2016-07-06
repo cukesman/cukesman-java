@@ -1,8 +1,6 @@
-package cukesman.jbehave.model;
+package cukesman.jbehave.client.model;
 
-import java.io.Serializable;
-
-public class ScenarioReport implements Serializable {
+public class ScenarioReport {
 
     private String token;
 

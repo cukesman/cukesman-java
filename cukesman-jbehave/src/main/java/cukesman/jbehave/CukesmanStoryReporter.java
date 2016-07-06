@@ -1,8 +1,8 @@
 package cukesman.jbehave;
 
-import cukesman.jbehave.model.FeatureReport;
-import cukesman.jbehave.model.ScenarioReport;
-import cukesman.jbehave.model.Status;
+import cukesman.jbehave.client.model.FeatureReport;
+import cukesman.jbehave.client.model.ScenarioReport;
+import cukesman.jbehave.client.model.Status;
 import org.jbehave.core.model.ExamplesTable;
 import org.jbehave.core.model.GivenStories;
 import org.jbehave.core.model.Lifecycle;
@@ -28,15 +28,13 @@ public class CukesmanStoryReporter implements StoryReporter {
 
     private boolean givenStoryContext;
 
-    @Override
-    public void storyNotAllowed(Story story, String filter) {
-
-    }
+    private boolean dryRun;
 
     @Override
-    public void storyCancelled(Story story, StoryDuration storyDuration) {
+    public void storyNotAllowed(Story story, String filter) {}
 
-    }
+    @Override
+    public void storyCancelled(Story story, StoryDuration storyDuration) {}
 
     @Override
     public void beforeStory(Story story, boolean givenStory) {
@@ -60,22 +58,16 @@ public class CukesmanStoryReporter implements StoryReporter {
      }
 
     @Override
-    public void narrative(Narrative narrative) {
-
-    }
+    public void narrative(Narrative narrative) {}
 
     @Override
-    public void lifecyle(Lifecycle lifecycle) {
-        System.out.println("LIFE: " + lifecycle.toString());
-    }
-
-    @Override public void scenarioNotAllowed(Scenario scenario, String filter) {
-
-    }
+    public void lifecyle(Lifecycle lifecycle) {}
 
     @Override
-    public void beforeScenario(String scenarioTitle) {
-    }
+    public void scenarioNotAllowed(Scenario scenario, String filter) {}
+
+    @Override
+    public void beforeScenario(String scenarioTitle) {}
 
     @Override
     public void scenarioMeta(final Meta meta) {
@@ -95,34 +87,23 @@ public class CukesmanStoryReporter implements StoryReporter {
     }
 
     @Override
-    public void givenStories(GivenStories givenStories) {
-
-    }
+    public void givenStories(GivenStories givenStories) {}
 
     @Override
-    public void givenStories(List<String> storyPaths) {
-
-    }
+    public void givenStories(List<String> storyPaths) {}
 
     @Override
     public void beforeExamples(List<String> steps, ExamplesTable table) {
-
     }
 
     @Override
-    public void example(Map<String, String> tableRow) {
-
-    }
+    public void example(Map<String, String> tableRow) {}
 
     @Override
-    public void afterExamples() {
-
-    }
+    public void afterExamples() {}
 
     @Override
-    public void beforeStep(String step) {
-
-    }
+    public void beforeStep(String step) {}
 
     @Override
     public void successful(String step) {
@@ -151,7 +132,7 @@ public class CukesmanStoryReporter implements StoryReporter {
 
     @Override
     public void failedOutcomes(String step, OutcomesTable table) {
-
+        handleStep(Status.failed);
     }
 
     @Override
@@ -166,19 +147,18 @@ public class CukesmanStoryReporter implements StoryReporter {
 
     @Override
     public void dryRun() {
-
+        dryRun = true;
     }
 
     @Override
     public void pendingMethods(List<String> methods) {
-
     }
 
     public FeatureReport getFeatureReport() {
         return featureReport;
     }
 
-    private void handleStep(Status status) {
+    private void handleStep(final Status status) {
         if (givenStoryContext) {
             return;
         }
@@ -189,7 +169,7 @@ public class CukesmanStoryReporter implements StoryReporter {
         currentScenarioReport.setStatus(newStatus);
     }
 
-    private Optional<String> token(Meta meta) {
+    private Optional<String> token(final Meta meta) {
         if (meta == null) {
             return Optional.empty();
         }

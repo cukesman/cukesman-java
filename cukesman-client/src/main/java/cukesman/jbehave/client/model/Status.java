@@ -1,4 +1,4 @@
-package cukesman.jbehave.model;
+package cukesman.jbehave.client.model;
 
 public enum Status {
 
