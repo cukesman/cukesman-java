@@ -1,5 +1,6 @@
 package cukesman.reporter;
 
+import cukesman.reporter.model.ExecutionReport;
 import cukesman.reporter.model.FeatureReport;
 
 import java.util.Objects;
@@ -21,6 +22,11 @@ public class ReportUploader {
     }
 
     public void upload(final FeatureReport featureReport) {
+        final ExecutionReport executionReport = ExecutionReport.createNew().withFeature(featureReport);
+        upload(executionReport);
+    }
+
+    public void upload(final ExecutionReport executionReport) {
 
     }
 

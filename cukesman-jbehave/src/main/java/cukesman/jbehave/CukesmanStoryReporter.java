@@ -17,6 +17,7 @@ import org.jbehave.core.reporters.StoryReporter;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -98,6 +99,7 @@ public class CukesmanStoryReporter implements StoryReporter {
             return;
         }
         currentScenarioReport = new ScenarioReport();
+        currentScenarioReport.setUpdatedAt(new Date());
         currentScenarioReport.setToken(token.get());
         currentScenarioReport.setStatus(Status.in_progress);
         featureReport.getScenarios().add(currentScenarioReport);
@@ -115,8 +117,7 @@ public class CukesmanStoryReporter implements StoryReporter {
     public void givenStories(List<String> storyPaths) {}
 
     @Override
-    public void beforeExamples(List<String> steps, ExamplesTable table) {
-    }
+    public void beforeExamples(List<String> steps, ExamplesTable table) {}
 
     @Override
     public void example(Map<String, String> tableRow) {}
@@ -129,43 +130,39 @@ public class CukesmanStoryReporter implements StoryReporter {
 
     @Override
     public void successful(String step) {
-        handleStep(Status.success);
+        handleStep(step, Status.success);
     }
 
     @Override
     public void ignorable(String step) {
-        handleStep(Status.skipped);
+        handleStep(step, Status.skipped);
     }
 
     @Override
     public void pending(String step) {
-        handleStep(Status.pending);
+        handleStep(step, Status.pending);
     }
 
     @Override
     public void notPerformed(String step) {
-        handleStep(Status.pending);
+        handleStep(step, Status.pending);
     }
 
     @Override
     public void failed(String step, Throwable cause) {
-        handleStep(Status.failed);
+        handleStep(step, Status.failed);
     }
 
     @Override
     public void failedOutcomes(String step, OutcomesTable table) {
-        handleStep(Status.failed);
+        handleStep(step, Status.failed);
     }
 
     @Override
-    public void restarted(String step, Throwable cause) {
-
-    }
+    public void restarted(String step, Throwable cause) {}
 
     @Override
-    public void restartedStory(Story story, Throwable cause) {
-
-    }
+    public void restartedStory(Story story, Throwable cause) {}
 
     @Override
     public void dryRun() {
@@ -173,14 +170,13 @@ public class CukesmanStoryReporter implements StoryReporter {
     }
 
     @Override
-    public void pendingMethods(List<String> methods) {
-    }
+    public void pendingMethods(List<String> methods) {}
 
     public FeatureReport getFeatureReport() {
         return featureReport;
     }
 
-    private void handleStep(final Status status) {
+    private void handleStep(final String step, final Status status) {
         if (givenStoryContext) {
             return;
         }

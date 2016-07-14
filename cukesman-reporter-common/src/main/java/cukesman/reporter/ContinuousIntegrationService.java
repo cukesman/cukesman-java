@@ -1,5 +1,7 @@
 package cukesman.reporter;
 
+import cukesman.reporter.model.Build;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -16,20 +18,21 @@ public class ContinuousIntegrationService {
             "CI_BUILD_NUMBER"
     );
 
-    public static boolean isContinousIntegrationRun() {
-        return readBuildNumber().isPresent();
+    public static Build readBuild() {
+        final Build build = new Build();
+        build.setBuildNumber(ContinuousIntegrationService.readBuildNumber());
+        return build;
     }
 
-    public static Optional<String> readBuildNumber() {
+    public static boolean isContinousIntegrationRun() {
+        return readBuildNumber() != null;
+    }
+
+    public static String readBuildNumber() {
         final Optional<Map.Entry<String, String>> buildNumberEntry = System.getenv().entrySet().stream()
                 .filter(e -> BUILD_NUMBER_ENV_VARS.contains(e.getKey()))
                 .findFirst();
-
-        if (buildNumberEntry.isPresent()) {
-            return Optional.of(buildNumberEntry.get().getValue());
-        } else {
-            return Optional.empty();
-        }
+        return buildNumberEntry.orElse(null).getValue();
     }
 
 }
