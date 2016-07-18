@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -151,7 +152,7 @@ public class CukesmanStoryReporter implements StoryReporter {
 
     @Override
     public void failed(String step, Throwable cause) {
-        handleStep(step, Status.failed, cause);
+        handleStep(step, Status.failed, Optional.of(cause));
     }
 
     @Override
@@ -187,12 +188,28 @@ public class CukesmanStoryReporter implements StoryReporter {
         }
 
         final StepReport stepReport = new StepReport();
-        stepReport.setText(text);
+        final String[] keywordAndText = extractKeyword(text);
+        stepReport.setKeyword(keywordAndText[0]);
+        stepReport.setText(keywordAndText[1]);
         stepReport.setStatus(status);
 
         error.ifPresent(t -> stepReport.setError(t.getMessage()));
 
         currentScenarioReport.withStep(stepReport);
+    }
+
+    private String[] extractKeyword(final String textWithKeyword) {
+        Objects.requireNonNull(textWithKeyword);
+
+        final String[] words = textWithKeyword.split("\\s");
+        final String keyword = words[0].toLowerCase();
+        final String text = textWithKeyword.substring(keyword.length()).trim();
+
+        final String[] keywordAndText = new String[2];
+        keywordAndText[0] = keyword;
+        keywordAndText[1] = text;
+
+        return keywordAndText;
     }
 
     private Optional<String> token(final Meta meta) {

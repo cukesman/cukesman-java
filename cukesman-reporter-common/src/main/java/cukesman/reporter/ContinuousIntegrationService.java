@@ -32,7 +32,11 @@ public class ContinuousIntegrationService {
         final Optional<Map.Entry<String, String>> buildNumberEntry = System.getenv().entrySet().stream()
                 .filter(e -> BUILD_NUMBER_ENV_VARS.contains(e.getKey()))
                 .findFirst();
-        return buildNumberEntry.orElse(null).getValue();
+        if (!buildNumberEntry.isPresent()) {
+            return null;
+        } else {
+            return buildNumberEntry.get().getValue();
+        }
     }
 
 }

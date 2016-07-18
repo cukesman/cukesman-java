@@ -2,6 +2,8 @@ package cukesman.reporter.model;
 
 public class StepReport {
 
+    private String keyword;
+
     private String text;
 
     private Status status;
@@ -22,6 +24,14 @@ public class StepReport {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 
     public String getText() {
