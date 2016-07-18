@@ -4,6 +4,7 @@ import cukesman.reporter.ReportUploader;
 import cukesman.reporter.model.FeatureReport;
 import cukesman.reporter.model.ScenarioReport;
 import cukesman.reporter.model.Status;
+import cukesman.reporter.model.StepReport;
 import org.jbehave.core.model.ExamplesTable;
 import org.jbehave.core.model.GivenStories;
 import org.jbehave.core.model.Lifecycle;
@@ -150,7 +151,7 @@ public class CukesmanStoryReporter implements StoryReporter {
 
     @Override
     public void failed(String step, Throwable cause) {
-        handleStep(step, Status.failed);
+        handleStep(step, Status.failed, cause);
     }
 
     @Override
@@ -176,15 +177,22 @@ public class CukesmanStoryReporter implements StoryReporter {
         return featureReport;
     }
 
-    private void handleStep(final String step, final Status status) {
+    private void handleStep(final String text, final Status status) {
+        handleStep(text, status, Optional.empty());
+    }
+
+    private void handleStep(final String text, final Status status, final Optional<Throwable> error) {
         if (givenStoryContext) {
             return;
         }
 
-        final Status newStatus = Collections.max(
-                Arrays.asList(currentScenarioReport.getStatus(), status)
-        );
-        currentScenarioReport.setStatus(newStatus);
+        final StepReport stepReport = new StepReport();
+        stepReport.setText(text);
+        stepReport.setStatus(status);
+
+        error.ifPresent(t -> stepReport.setError(t.getMessage()));
+
+        currentScenarioReport.withStep(stepReport);
     }
 
     private Optional<String> token(final Meta meta) {
