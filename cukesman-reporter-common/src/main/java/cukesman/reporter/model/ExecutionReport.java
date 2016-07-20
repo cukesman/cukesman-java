@@ -7,8 +7,6 @@ import java.util.List;
 
 public class ExecutionReport {
 
-    private String versionNumber;
-
     private Build build;
 
     private List<FeatureReport> featureReports = new ArrayList<>();
@@ -22,6 +20,22 @@ public class ExecutionReport {
     public ExecutionReport withFeature(final FeatureReport featureReport) {
         this.featureReports.add(featureReport);
         return this;
+    }
+
+    public Build getBuild() {
+        return build;
+    }
+
+    public void setBuild(Build build) {
+        this.build = build;
+    }
+
+    public List<FeatureReport> getFeatureReports() {
+        return featureReports;
+    }
+
+    public void setFeatureReports(List<FeatureReport> featureReports) {
+        this.featureReports = featureReports;
     }
 
 }

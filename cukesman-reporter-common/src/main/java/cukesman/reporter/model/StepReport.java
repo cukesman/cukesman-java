@@ -2,20 +2,20 @@ package cukesman.reporter.model;
 
 public class StepReport {
 
-    private String keyword;
+    private Keyword keyword;
 
     private String text;
 
     private Status status;
 
-    private String error;
+    private String message;
 
-    public String getError() {
-        return error;
+    public String getMessage() {
+        return message;
     }
 
-    public void setError(String error) {
-        this.error = error;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public Status getStatus() {
@@ -26,11 +26,11 @@ public class StepReport {
         this.status = status;
     }
 
-    public String getKeyword() {
+    public Keyword getKeyword() {
         return keyword;
     }
 
-    public void setKeyword(String keyword) {
+    public void setKeyword(Keyword keyword) {
         this.keyword = keyword;
     }
 

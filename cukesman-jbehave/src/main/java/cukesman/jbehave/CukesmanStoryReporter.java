@@ -2,6 +2,7 @@ package cukesman.jbehave;
 
 import cukesman.reporter.ReportUploader;
 import cukesman.reporter.model.FeatureReport;
+import cukesman.reporter.model.Keyword;
 import cukesman.reporter.model.ScenarioReport;
 import cukesman.reporter.model.Status;
 import cukesman.reporter.model.StepReport;
@@ -16,8 +17,6 @@ import org.jbehave.core.model.Story;
 import org.jbehave.core.model.StoryDuration;
 import org.jbehave.core.reporters.StoryReporter;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -72,7 +71,7 @@ public class CukesmanStoryReporter implements StoryReporter {
             } catch (Exception e) {
                 final String message = String.format(
                         "Could not upload report for feature %s (Token %s) to cukesman.",
-                        featureReport.getToken(),
+                        featureReport.getTitle(),
                         featureReport.getToken()
                 );
                 LOG.warning(message);
@@ -189,11 +188,11 @@ public class CukesmanStoryReporter implements StoryReporter {
 
         final StepReport stepReport = new StepReport();
         final String[] keywordAndText = extractKeyword(text);
-        stepReport.setKeyword(keywordAndText[0]);
+        stepReport.setKeyword(Keyword.valueOf(keywordAndText[0].toLowerCase()));
         stepReport.setText(keywordAndText[1]);
         stepReport.setStatus(status);
 
-        error.ifPresent(t -> stepReport.setError(t.getMessage()));
+        error.ifPresent(t -> stepReport.setMessage(t.getMessage()));
 
         currentScenarioReport.withStep(stepReport);
     }
