@@ -2,6 +2,7 @@ package cukesman.reporter;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import cukesman.reporter.gson.ISO8601DateSerializer;
 import cukesman.reporter.model.ExecutionReport;
 import cukesman.reporter.model.FeatureReport;
 import feign.Feign;
