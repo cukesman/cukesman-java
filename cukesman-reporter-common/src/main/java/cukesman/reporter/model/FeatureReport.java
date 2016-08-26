@@ -1,6 +1,5 @@
 package cukesman.reporter.model;
 
-import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +19,6 @@ public class FeatureReport {
         this.token = token;
     }
 
-    @Transient
     public String getTitle() {
         return title;
     }

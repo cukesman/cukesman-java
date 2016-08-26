@@ -9,7 +9,7 @@ public class ExecutionReport {
 
     private Build build;
 
-    private List<FeatureReport> featureReports = new ArrayList<>();
+    private List<FeatureReport> features = new ArrayList<>();
 
     public static ExecutionReport createNew() {
         final ExecutionReport executionReport = new ExecutionReport();
@@ -18,7 +18,7 @@ public class ExecutionReport {
     }
 
     public ExecutionReport withFeature(final FeatureReport featureReport) {
-        this.featureReports.add(featureReport);
+        this.features.add(featureReport);
         return this;
     }
 
@@ -30,12 +30,12 @@ public class ExecutionReport {
         this.build = build;
     }
 
-    public List<FeatureReport> getFeatureReports() {
-        return featureReports;
+    public List<FeatureReport> getFeatures() {
+        return features;
     }
 
-    public void setFeatureReports(List<FeatureReport> featureReports) {
-        this.featureReports = featureReports;
+    public void setFeatures(List<FeatureReport> features) {
+        this.features = features;
     }
 
 }

@@ -1,8 +1,17 @@
 package cukesman.reporter;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import cukesman.reporter.model.ExecutionReport;
 import cukesman.reporter.model.FeatureReport;
+import feign.Feign;
+import feign.Logger;
+import feign.auth.BasicAuthRequestInterceptor;
+import feign.gson.GsonDecoder;
+import feign.gson.GsonEncoder;
+import feign.slf4j.Slf4jLogger;
 
+import java.util.Date;
 import java.util.Objects;
 
 public class ReportUploader {
@@ -27,7 +36,15 @@ public class ReportUploader {
     }
 
     public void upload(final ExecutionReport executionReport) {
-
+        final Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new ISO8601DateSerializer()).create();
+        final CukesmanReportAPI cukesmanReportAPI = Feign.builder()
+                .logger(new Slf4jLogger())
+                .logLevel(Logger.Level.FULL)
+                .requestInterceptor(new BasicAuthRequestInterceptor(username, password))
+                .encoder(new GsonEncoder(gson))
+                .decoder(new GsonDecoder(gson))
+                .target(CukesmanReportAPI.class, url);
+        cukesmanReportAPI.reportExecution(executionReport);
     }
 
     private static String readEnvVar(final String name) {

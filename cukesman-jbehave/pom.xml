@@ -17,6 +17,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.1.3</version>
+        </dependency>
+        <dependency>
             <groupId>cukesman</groupId>
             <artifactId>cukesman-reporter-common</artifactId>
         </dependency>

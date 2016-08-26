@@ -1,6 +1,5 @@
 package cukesman.reporter.model;
 
-import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -11,14 +10,16 @@ public class ScenarioReport {
 
     private String token;
 
+    private String title;
+
     private Status status;
 
     private Date updatedAt;
 
-    private List<StepReport> stepReports = new ArrayList<>();
+    private List<StepReport> steps = new ArrayList<>();
 
     public ScenarioReport withStep(final StepReport stepReport) {
-        stepReports.add(stepReport);
+        steps.add(stepReport);
         final Status newStatus = Collections.max(
                 Arrays.asList(status, stepReport.getStatus())
         );
@@ -34,6 +35,14 @@ public class ScenarioReport {
         this.token = token;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public Status getStatus() {
         return status;
     }
@@ -42,7 +51,6 @@ public class ScenarioReport {
         this.status = status;
     }
 
-    @Transient
     public Date getUpdatedAt() {
         return updatedAt;
     }
@@ -51,12 +59,12 @@ public class ScenarioReport {
         this.updatedAt = updatedAt;
     }
 
-    public List<StepReport> getStepReports() {
-        return stepReports;
+    public List<StepReport> getSteps() {
+        return steps;
     }
 
-    public void setStepReports(List<StepReport> stepReports) {
-        this.stepReports = stepReports;
+    public void setSteps(List<StepReport> steps) {
+        this.steps = steps;
     }
 
 }

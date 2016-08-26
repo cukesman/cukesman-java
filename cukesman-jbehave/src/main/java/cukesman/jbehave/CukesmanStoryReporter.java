@@ -16,23 +16,26 @@ import org.jbehave.core.model.Scenario;
 import org.jbehave.core.model.Story;
 import org.jbehave.core.model.StoryDuration;
 import org.jbehave.core.reporters.StoryReporter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.logging.Logger;
 
-import static cukesman.reporter.ContinuousIntegrationService.*;
+import static cukesman.reporter.ContinuousIntegrationService.isContinousIntegrationRun;
 
 public class CukesmanStoryReporter implements StoryReporter {
 
-    private Logger LOG = Logger.getLogger(CukesmanStoryReporter.class.getName());
+    private Logger LOG = LoggerFactory.getLogger(CukesmanStoryReporter.class.getName());
 
     private FeatureReport featureReport;
 
     private ScenarioReport currentScenarioReport;
+
+    private String scenarioTitle;
 
     private boolean givenStoryContext;
 
@@ -65,19 +68,19 @@ public class CukesmanStoryReporter implements StoryReporter {
             return;
         }
 
-        if (!dryRun && isContinousIntegrationRun()) {
+        if (featureReport != null && !dryRun && isContinousIntegrationRun()) {
             try {
                 ReportUploader.fromEnv().upload(featureReport);
             } catch (Exception e) {
                 final String message = String.format(
-                        "Could not upload report for feature %s (Token %s) to cukesman.",
+                        "Could not report execution for feature %s (Token %s) to cukesman.",
                         featureReport.getTitle(),
                         featureReport.getToken()
                 );
-                LOG.warning(message);
+                LOG.warn(message, e);
             }
         } else {
-            LOG.info("Skipping report upload to cukesman (no CI environment detected).");
+            LOG.info("Skipping report reportExecution to cukesman (no CI environment detected).");
         }
      }
 
@@ -91,7 +94,9 @@ public class CukesmanStoryReporter implements StoryReporter {
     public void scenarioNotAllowed(Scenario scenario, String filter) {}
 
     @Override
-    public void beforeScenario(String scenarioTitle) {}
+    public void beforeScenario(String scenarioTitle) {
+        this.scenarioTitle = scenarioTitle;
+    }
 
     @Override
     public void scenarioMeta(final Meta meta) {
@@ -100,6 +105,7 @@ public class CukesmanStoryReporter implements StoryReporter {
             return;
         }
         currentScenarioReport = new ScenarioReport();
+        currentScenarioReport.setTitle(scenarioTitle);
         currentScenarioReport.setUpdatedAt(new Date());
         currentScenarioReport.setToken(token.get());
         currentScenarioReport.setStatus(Status.in_progress);
