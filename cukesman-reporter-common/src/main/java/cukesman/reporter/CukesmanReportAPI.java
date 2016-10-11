@@ -5,7 +5,7 @@ import feign.RequestLine;
 
 public interface CukesmanReportAPI {
 
-    @RequestLine("PUT /executions/report")
+    @RequestLine("POST /executions/report")
     void reportExecution(final ExecutionReport executionReport);
 
 }
