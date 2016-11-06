@@ -25,9 +25,9 @@ public class ReportUploader {
 
     public static ReportUploader fromEnv() {
         final ReportUploader reportUploader = new ReportUploader();
-        reportUploader.url = readEnvVar("CUKESMAN_URL");
-        reportUploader.username = readEnvVar("CUKESMAN_USER");
-        reportUploader.password = readEnvVar("CUKESMAN_PASSWORD");
+        reportUploader.url = readEnvVarOrProperty("CUKESMAN_URL", "cukesmanUrl");
+        reportUploader.username = readEnvVarOrProperty("CUKESMAN_USER", "cukesmanUser");
+        reportUploader.password = readEnvVarOrProperty("CUKESMAN_PASSWORD", "cukesmanPassword");
         return reportUploader;
     }
 
@@ -48,10 +48,14 @@ public class ReportUploader {
         cukesmanReportAPI.reportExecution(executionReport);
     }
 
-    private static String readEnvVar(final String name) {
+    private static String readEnvVarOrProperty(final String envVarName, final String propertyName) {
+        String value = System.getenv(envVarName);
+        if (value == null) {
+            value = System.getProperty(propertyName)
+        }
         return Objects.requireNonNull(
-                System.getenv(name),
-                String.format("Missing environment variable %s.", name)
+                value,
+                String.format("Missing environment variable %s or System Property.", envVarName, propertyName)
         );
     }
 
