@@ -51,7 +51,7 @@ public class ReportUploader {
     private static String readEnvVarOrProperty(final String envVarName, final String propertyName) {
         String value = System.getenv(envVarName);
         if (value == null) {
-            value = System.getProperty(propertyName)
+            value = System.getProperty(propertyName);
         }
         return Objects.requireNonNull(
                 value,
