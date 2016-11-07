@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-export BUILD_NUMBER=CUKESMAN-$RANDOM
-
-export CUKESMAN_URL=http://localhost:3300
-export CUKESMAN_USER=jan@cukesman.com
-export CUKESMAN_PASSWORD=geheim01
-
-mvn -DCukesmanReporterStoryTest test
