@@ -95,7 +95,8 @@ public class CukesmanStoryReporter implements StoryReporter {
 
     @Override
     public void beforeScenario(String scenarioTitle) {
-        this.scenarioTitle = scenarioTitle;
+        currentScenarioReport = new ScenarioReport();
+        currentScenarioReport.setTitle(scenarioTitle);
     }
 
     @Override
@@ -104,8 +105,6 @@ public class CukesmanStoryReporter implements StoryReporter {
         if (!token.isPresent()) {
             return;
         }
-        currentScenarioReport = new ScenarioReport();
-        currentScenarioReport.setTitle(scenarioTitle);
         currentScenarioReport.setUpdatedAt(new Date());
         currentScenarioReport.setToken(token.get());
         currentScenarioReport.setStatus(Status.in_progress);
