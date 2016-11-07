@@ -20,10 +20,14 @@ public class ScenarioReport {
 
     public ScenarioReport withStep(final StepReport stepReport) {
         steps.add(stepReport);
-        final Status newStatus = Collections.max(
-                Arrays.asList(status, stepReport.getStatus())
-        );
-        status = newStatus;
+        if (status == null) {
+            status = stepReport.getStatus();
+        } else {
+            final Status newStatus = Collections.max(
+                    Arrays.asList(status, stepReport.getStatus())
+            );
+            status = newStatus;
+        }
         return this;
     }
 
