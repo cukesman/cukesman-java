@@ -83,7 +83,7 @@ public class CukesmanStoryReporter implements StoryReporter {
                 LOG.warn(message, e);
             }
         } else {
-            LOG.info("Skipping report reportExecution to cukesman (no report of no CI environment detected).");
+            LOG.info("Skipping report reportExecution to cukesman (no report or no CI environment detected).");
         }
      }
 
