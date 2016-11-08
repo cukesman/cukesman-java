@@ -54,9 +54,9 @@ public class CukesmanStoryReporter implements StoryReporter {
             return;
         }
 
+        this.story = story;
         final Optional<String> token = token(story.getMeta());
         if (token.isPresent()) {
-            this.story = story;
             featureReport = new FeatureReport();
             featureReport.setTitle(story.getName());
             featureReport.setToken(token.get());
