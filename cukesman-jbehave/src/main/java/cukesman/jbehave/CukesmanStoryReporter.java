@@ -225,6 +225,10 @@ public class CukesmanStoryReporter implements StoryReporter {
         keywordAndText[0] = keyword;
         keywordAndText[1] = text;
 
+        // TRICKY: Replace the JBehave marker characters for parameters.
+        keywordAndText[1] = keywordAndText[1].replace("｟", "");
+        keywordAndText[1] = keywordAndText[1].replace("｠", "");
+
         return keywordAndText;
     }
 
