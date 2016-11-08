@@ -1,6 +1,3 @@
-/*
- * Copyright © 2014 HanseMerkur Krankenversicherung AG All Rights Reserved.
- */
 package cukesman.jbehave;
 
 import cukesman.reporter.model.FeatureReport;

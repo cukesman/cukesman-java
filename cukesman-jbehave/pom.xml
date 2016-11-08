@@ -12,7 +12,7 @@
     <artifactId>cukesman-jbehave</artifactId>
 
     <properties>
-        <jbehave.version>4.0</jbehave.version>
+        <jbehave.version>4.0.5</jbehave.version>
     </properties>
 
     <dependencies>

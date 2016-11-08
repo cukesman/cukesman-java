@@ -29,13 +29,13 @@ import static cukesman.reporter.ContinuousIntegrationService.isContinousIntegrat
 
 public class CukesmanStoryReporter implements StoryReporter {
 
-    private Logger LOG = LoggerFactory.getLogger(CukesmanStoryReporter.class.getName());
+    private Logger LOG = LoggerFactory.getLogger(CukesmanStoryReporter.class);
+
+    private Story story;
 
     private FeatureReport featureReport;
 
     private ScenarioReport currentScenarioReport;
-
-    private String scenarioTitle;
 
     private boolean givenStoryContext;
 
@@ -56,6 +56,7 @@ public class CukesmanStoryReporter implements StoryReporter {
 
         final Optional<String> token = token(story.getMeta());
         if (token.isPresent()) {
+            this.story = story;
             featureReport = new FeatureReport();
             featureReport.setTitle(story.getName());
             featureReport.setToken(token.get());
@@ -67,6 +68,8 @@ public class CukesmanStoryReporter implements StoryReporter {
         if (givenStory) {
             return;
         }
+
+        story = null;
 
         if (featureReport != null && !dryRun && isContinousIntegrationRun()) {
             try {
@@ -97,6 +100,15 @@ public class CukesmanStoryReporter implements StoryReporter {
     public void beforeScenario(String scenarioTitle) {
         currentScenarioReport = new ScenarioReport();
         currentScenarioReport.setTitle(scenarioTitle);
+
+        // TRICKY: The methocd scenarioMeta() is not called from JBehave
+        // thats why we have to call it ourself.
+        final Scenario scenario = story.getScenarios().stream()
+                .filter(s -> s.getTitle().equals(scenarioTitle))
+                .findFirst()
+                .get();
+
+        scenarioMeta(scenario.getMeta());
     }
 
     @Override
