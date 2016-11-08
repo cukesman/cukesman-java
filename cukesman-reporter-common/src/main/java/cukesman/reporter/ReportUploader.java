@@ -55,7 +55,7 @@ public class ReportUploader {
         }
         return Objects.requireNonNull(
                 value,
-                String.format("Missing environment variable %s or System Property.", envVarName, propertyName)
+                String.format("Missing environment variable %s or System Property %s.", envVarName, propertyName)
         );
     }
 
