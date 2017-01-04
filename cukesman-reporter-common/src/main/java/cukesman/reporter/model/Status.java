@@ -6,6 +6,6 @@ public enum Status {
     skipped,
     in_progress,
     pending,
-    failed;
+    failed
 
 }

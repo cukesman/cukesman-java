@@ -2,10 +2,11 @@ package cukesman.reporter.model;
 
 import cukesman.reporter.ContinuousIntegrationService;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExecutionReport {
+public class ExecutionReport implements Serializable {
 
     private Build build;
 

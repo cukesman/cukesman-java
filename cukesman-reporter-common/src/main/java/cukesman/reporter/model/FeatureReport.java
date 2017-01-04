@@ -1,9 +1,10 @@
 package cukesman.reporter.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FeatureReport {
+public class FeatureReport implements Serializable {
 
     private String token;
 

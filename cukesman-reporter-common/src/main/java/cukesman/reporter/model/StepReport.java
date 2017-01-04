@@ -1,6 +1,8 @@
 package cukesman.reporter.model;
 
-public class StepReport {
+import java.io.Serializable;
+
+public class StepReport implements Serializable {
 
     private Keyword keyword;
 

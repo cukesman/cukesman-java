@@ -1,12 +1,14 @@
 package cukesman.reporter.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class ScenarioReport {
+import static cukesman.reporter.model.Status.*;
+
+public class ScenarioReport implements Serializable {
 
     private String token;
 
@@ -23,10 +25,10 @@ public class ScenarioReport {
         if (status == null) {
             status = stepReport.getStatus();
         } else {
-            final Status newStatus = Collections.max(
-                    Arrays.asList(status, stepReport.getStatus())
-            );
-            status = newStatus;
+            final List<Status> statuses = steps.stream()
+                    .map(s -> s.getStatus())
+                    .collect(Collectors.toList());
+            status = calcProgress(statuses);
         }
         return this;
     }
@@ -71,4 +73,42 @@ public class ScenarioReport {
         this.steps = steps;
     }
 
+    public static Status calcProgress(final List<Status> statuses) {
+        if (statuses.size() == 0) {
+            return success;
+        }
+
+        final List<Status> unskipped = statuses.stream()
+                .filter(status -> status != skipped)
+                .collect(Collectors.toList());
+        if (unskipped.isEmpty()) {
+            return skipped;
+        }
+
+        final boolean hasFailed = unskipped.stream()
+                .anyMatch(status -> status == failed);
+        if (hasFailed) {
+            return failed;
+        }
+
+        final boolean hasPending = unskipped.stream()
+                .anyMatch(status -> status == pending);
+        if (hasPending) {
+            return pending;
+        }
+
+        final boolean hasInProgress = unskipped.stream()
+                .anyMatch(status -> status == in_progress);
+        if (hasInProgress) {
+            return in_progress;
+        }
+
+        final boolean allSuccess = unskipped.stream()
+                .allMatch(status -> status == success);
+        if (allSuccess) {
+            return success;
+        }
+
+        throw new IllegalStateException(String.format("Could not calculate progress for statuses %s.", statuses));
+    }
 }
