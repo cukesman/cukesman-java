@@ -10,10 +10,13 @@ import feign.Logger;
 import feign.auth.BasicAuthRequestInterceptor;
 import feign.gson.GsonDecoder;
 import feign.gson.GsonEncoder;
+import feign.okhttp.OkHttpClient;
 import feign.slf4j.Slf4jLogger;
 
 import java.util.Date;
-import java.util.Objects;
+import static cukesman.EnvPropertyReader.readEnvVarOrProperty;
+import static cukesman.EnvPropertyReader.readCukesmanUser;
+import static cukesman.EnvPropertyReader.readCukesmanPassword;
 
 public class ReportUploader {
 
@@ -26,8 +29,8 @@ public class ReportUploader {
     public static ReportUploader fromEnv() {
         final ReportUploader reportUploader = new ReportUploader();
         reportUploader.url = readEnvVarOrProperty("CUKESMAN_URL", "cukesmanUrl");
-        reportUploader.username = readEnvVarOrProperty("CUKESMAN_USER", "cukesmanUser");
-        reportUploader.password = readEnvVarOrProperty("CUKESMAN_PASSWORD", "cukesmanPassword");
+        reportUploader.username = readCukesmanUser();
+        reportUploader.password = readCukesmanPassword();
         return reportUploader;
     }
 
@@ -39,6 +42,7 @@ public class ReportUploader {
     public void upload(final ExecutionReport executionReport) {
         final Gson gson = new GsonBuilder().registerTypeAdapter(Date.class, new ISO8601DateSerializer()).create();
         final CukesmanReportAPI cukesmanReportAPI = Feign.builder()
+                .client(new OkHttpClient())
                 .logger(new Slf4jLogger())
                 .logLevel(Logger.Level.FULL)
                 .requestInterceptor(new BasicAuthRequestInterceptor(username, password))
@@ -46,17 +50,6 @@ public class ReportUploader {
                 .decoder(new GsonDecoder(gson))
                 .target(CukesmanReportAPI.class, url);
         cukesmanReportAPI.reportExecution(executionReport);
-    }
-
-    private static String readEnvVarOrProperty(final String envVarName, final String propertyName) {
-        String value = System.getenv(envVarName);
-        if (value == null) {
-            value = System.getProperty(propertyName);
-        }
-        return Objects.requireNonNull(
-                value,
-                String.format("Missing environment variable %s or System Property %s.", envVarName, propertyName)
-        );
     }
 
 }
