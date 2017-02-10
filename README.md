@@ -7,7 +7,7 @@
     <repositories>
         <repository>
             <id>cukesman-java-snapshot-repo</id>
-            <url>https://raw.github.com/cukesman/cukesman-java/snapshots/</url>
+            <url>http://mvn-repo.cukesman.com/</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>always</updatePolicy>
