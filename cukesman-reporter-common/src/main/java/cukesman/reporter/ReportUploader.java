@@ -2,6 +2,7 @@ package cukesman.reporter;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import cukesman.EnvPropertyReader;
 import cukesman.reporter.gson.ISO8601DateSerializer;
 import cukesman.reporter.model.ExecutionReport;
 import cukesman.reporter.model.FeatureReport;
@@ -14,9 +15,8 @@ import feign.okhttp.OkHttpClient;
 import feign.slf4j.Slf4jLogger;
 
 import java.util.Date;
-import static cukesman.EnvPropertyReader.readEnvVarOrProperty;
-import static cukesman.EnvPropertyReader.readCukesmanUser;
-import static cukesman.EnvPropertyReader.readCukesmanPassword;
+
+import static cukesman.EnvPropertyReader.*;
 
 public class ReportUploader {
 
@@ -28,7 +28,7 @@ public class ReportUploader {
 
     public static ReportUploader fromEnv() {
         final ReportUploader reportUploader = new ReportUploader();
-        reportUploader.url = readEnvVarOrProperty("CUKESMAN_URL", "cukesmanUrl");
+        reportUploader.url = readCukesmanUrl();
         reportUploader.username = readCukesmanUser();
         reportUploader.password = readCukesmanPassword();
         return reportUploader;
@@ -49,7 +49,12 @@ public class ReportUploader {
                 .encoder(new GsonEncoder(gson))
                 .decoder(new GsonDecoder(gson))
                 .target(CukesmanReportAPI.class, url);
-        cukesmanReportAPI.reportExecution(executionReport);
+
+        if (hasCukesmanOneOffFeatureId()) {
+            cukesmanReportAPI.reportOneOffExecution(readCukesmanOneOffFeatureId(), executionReport);
+        } else {
+            cukesmanReportAPI.reportExecution(executionReport);
+        }
     }
 
 }

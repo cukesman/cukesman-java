@@ -11,4 +11,8 @@ public interface CukesmanReportAPI {
     @Headers("Content-Type: application/json;charset=UTF-8")
     void reportExecution(final ExecutionReport executionReport);
 
+    @RequestLine("POST /executions/report/oneoff/{id}")
+    @Headers("Content-Type: application/json;charset=UTF-8")
+    void reportOneOffExecution(final String id, final ExecutionReport executionReport);
+
 }

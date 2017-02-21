@@ -23,13 +23,17 @@ public class FeatureDownloader {
         client = clientBuilder.build();
     }
 
-    public String loadFromUrl(final String url) throws IOException {
-        final Request request = new Request.Builder()
-                .url(url)
-                .build();
+    public String loadFromUrl(final String url) {
+        try {
+            final Request request = new Request.Builder()
+                    .url(url)
+                    .build();
 
-        final Response response = client.newCall(request).execute();
-        return response.body().string();
+            final Response response = client.newCall(request).execute();
+            return response.body().string();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

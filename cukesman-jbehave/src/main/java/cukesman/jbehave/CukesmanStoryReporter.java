@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import static cukesman.EnvPropertyReader.hasCukesmanOneOffFeatureId;
 import static cukesman.reporter.ContinuousIntegrationService.isContinousIntegrationRun;
 
 public class CukesmanStoryReporter implements StoryReporter {
@@ -71,7 +72,8 @@ public class CukesmanStoryReporter implements StoryReporter {
 
         story = null;
 
-        if (featureReport != null && !dryRun && isContinousIntegrationRun()) {
+        if (featureReport != null && !dryRun
+                && (isContinousIntegrationRun() || isOneOffTest())) {
             try {
                 ReportUploader.fromEnv().upload(featureReport);
             } catch (Exception e) {
@@ -83,7 +85,7 @@ public class CukesmanStoryReporter implements StoryReporter {
                 LOG.warn(message, e);
             }
         } else {
-            LOG.info("Skipping report reportExecution to cukesman (no report or no CI environment detected).");
+            LOG.info("Skipping report upload to cukesman (no report or no CI environment detected).");
         }
      }
 
@@ -241,6 +243,10 @@ public class CukesmanStoryReporter implements StoryReporter {
                 .filter(p -> p.startsWith("cukesman"))
                 .map(p -> p.substring("cukesman".length() + 1))
                 .findFirst();
+    }
+
+    private static boolean isOneOffTest() {
+        return hasCukesmanOneOffFeatureId();
     }
 
 }

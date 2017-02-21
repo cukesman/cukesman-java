@@ -4,12 +4,36 @@ import java.util.Objects;
 
 public class EnvPropertyReader {
 
+    public static boolean hasCukesmanOneOffFeatureId() {
+        try {
+            return readCukesmanOneOffFeatureId() != null;
+        } catch (NullPointerException e) {
+            return false;
+        }
+    }
+
+    public static String readCukesmanOneOffFeatureURL() {
+        return String.format(
+                "%s/executions/one/off/%s.feature",
+                EnvPropertyReader.readCukesmanUrl(),
+                EnvPropertyReader.readCukesmanOneOffFeatureId()
+        );
+    }
+
+    public static String readCukesmanOneOffFeatureId() {
+        return readEnvVarOrProperty("CUKESMAN_ONEOFF_FEATURE_ID", "cukesmanOneOffFeatureId");
+    }
+
     public static String readCukesmanPassword() {
         return readEnvVarOrProperty("CUKESMAN_PASSWORD", "cukesmanPassword");
     }
 
     public static String readCukesmanUser() {
         return readEnvVarOrProperty("CUKESMAN_USER", "cukesmanUser");
+    }
+
+    public static String readCukesmanUrl() {
+        return readEnvVarOrProperty("CUKESMAN_URL", "cukesmanUrl");
     }
 
     public static String readEnvVarOrProperty(final String envVarName, final String propertyName) {
