@@ -2,6 +2,8 @@
 
 ## JBehave
 
+JBehave Reporter for Cukesman.
+
 ## Maven Repository
 
     <repositories>
