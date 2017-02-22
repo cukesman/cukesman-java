@@ -14,7 +14,7 @@ public class EnvPropertyReader {
 
     public static String readCukesmanOneOffFeatureURL() {
         return String.format(
-                "%s/executions/one/off/%s.feature",
+                "%s/executions/oneoff/%s.feature",
                 EnvPropertyReader.readCukesmanUrl(),
                 EnvPropertyReader.readCukesmanOneOffFeatureId()
         );

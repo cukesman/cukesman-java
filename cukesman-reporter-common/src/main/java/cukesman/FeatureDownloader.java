@@ -30,6 +30,11 @@ public class FeatureDownloader {
                     .build();
 
             final Response response = client.newCall(request).execute();
+            if (!response.isSuccessful()) {
+                final String message = String.format("Could not download feature from url %s (message: %s).", url, response.message());
+                throw new IllegalStateException(message);
+            }
+
             return response.body().string();
         } catch (IOException e) {
             throw new RuntimeException(e);
