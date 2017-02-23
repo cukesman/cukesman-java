@@ -15,6 +15,7 @@ import org.jbehave.core.model.OutcomesTable;
 import org.jbehave.core.model.Scenario;
 import org.jbehave.core.model.Story;
 import org.jbehave.core.model.StoryDuration;
+import org.jbehave.core.reporters.StackTraceFormatter;
 import org.jbehave.core.reporters.StoryReporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -215,7 +216,7 @@ public class CukesmanStoryReporter implements StoryReporter {
         stepReport.setText(keywordAndText[1]);
         stepReport.setStatus(status);
 
-        error.ifPresent(t -> stepReport.setMessage(t.getMessage()));
+        error.ifPresent(t -> stepReport.setMessage(new StackTraceFormatter(false).stackTrace(t)));
 
         currentScenarioReport.withStep(stepReport);
     }
